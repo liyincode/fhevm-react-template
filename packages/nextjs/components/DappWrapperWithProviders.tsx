@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { InMemoryStorageProvider } from "@fhevm-sdk";
+import { FhevmProvider, GenericStringInMemoryStorage } from "@fhevm-sdk";
 import { RainbowKitProvider, darkTheme, lightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AppProgressBar as ProgressBar } from "next-nprogress-bar";
@@ -10,6 +10,7 @@ import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
 import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/helper";
+import { browserFhevmConfig } from "~~/services/fhevm/config";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
 export const queryClient = new QueryClient({
@@ -24,6 +25,7 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
   const [mounted, setMounted] = useState(false);
+  const [signatureStorage] = useState(() => new GenericStringInMemoryStorage());
 
   useEffect(() => {
     setMounted(true);
@@ -40,7 +42,9 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
           <div className={`flex flex-col min-h-screen`}>
             <Header />
             <main className="relative flex flex-col flex-1">
-              <InMemoryStorageProvider>{children}</InMemoryStorageProvider>
+              <FhevmProvider config={browserFhevmConfig} storageOverrides={{ signatureStorage }}>
+                {children}
+              </FhevmProvider>
             </main>
           </div>
           <Toaster />
