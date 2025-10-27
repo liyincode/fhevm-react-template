@@ -109,7 +109,11 @@ export const createFhevmConfig = (options: FhevmConfigOptions): FhevmConfig => {
 };
 
 // Helper for consumers that need to read chain metadata from the config.
-export const getChainFromConfig = (config: FhevmConfig, chainId: number): ChainDefinition => {
+export const getChainFromConfig = (config: FhevmConfig, chainId: number | undefined): ChainDefinition | null => {
+  if (typeof chainId !== "number") {
+    return null;
+  }
+
   const chain = config.chains.get(chainId);
   if (!chain) {
     throw new Error(`Chain with id ${chainId} is not registered in FHEVM config.`);
@@ -117,10 +121,26 @@ export const getChainFromConfig = (config: FhevmConfig, chainId: number): ChainD
   return chain;
 };
 
-export const resolveDefaultChainId = (config: FhevmConfig): number => {
+export const resolveDefaultChainId = (
+  chainId: number | undefined,
+  config: FhevmConfig,
+  isMockEnvironment?: boolean
+): number => {
+  // If chainId is explicitly provided, use it
+  if (typeof chainId === "number") {
+    return chainId;
+  }
+
+  // In mock environment, try to use mock chain ID first
+  if (isMockEnvironment && config.mockChains && Object.keys(config.mockChains).length > 0) {
+    const mockChainIds = Object.keys(config.mockChains).map(Number);
+    return mockChainIds[0];
+  }
+
+  // Use config default or first chain
   const id = config.defaultChainId ?? [...config.chains.keys()][0];
   if (typeof id !== "number") {
-    throw new Error("FHEVM config requires at least one chain or an explicit defaultChainId.");
+    throw new Error("No chain ID provided and no default chain ID found in config");
   }
   return id;
 };

@@ -49,31 +49,109 @@ export const toHex = (value: Uint8Array | string): `0x${string}` => {
   if (typeof value === "string") {
     return (value.startsWith("0x") ? value : `0x${value}`) as `0x${string}`;
   }
-  // value is Uint8Array
-  return ("0x" + Buffer.from(value).toString("hex")) as `0x${string}`;
+  if (value.length === 0) {
+    return "0x";
+  }
+  let hex = "";
+  for (const byte of value) {
+    hex += byte.toString(16).padStart(2, "0");
+  }
+  return `0x${hex}` as `0x${string}`;
 };
 
 // Build contract params from EncryptResult and ABI for a given function
+type AbiInput = {
+  type: string;
+  name?: string;
+  internalType?: string;
+};
+
+const isProofParameter = (input: AbiInput): boolean => {
+  const name = input.name?.toLowerCase() ?? "";
+  const internalType = input.internalType?.toLowerCase() ?? "";
+  if (name.includes("proof")) return true;
+  if (internalType.includes("proof")) return true;
+  return false;
+};
+
+const coerceUintToBigInt = (raw: Uint8Array | string): bigint => {
+  const hex = toHex(raw);
+  return BigInt(hex);
+};
+
+const coerceBool = (raw: Uint8Array | string): boolean => {
+  if (typeof raw === "string") {
+    const normalized = raw.trim().toLowerCase();
+    if (normalized === "0x" || normalized === "0x0" || normalized === "0") return false;
+    return normalized !== "" && normalized !== "false";
+  }
+  for (const value of raw) {
+    if (value !== 0) return true;
+  }
+  return false;
+};
+
+const coerceAddressOrString = (raw: Uint8Array | string): string => {
+  if (typeof raw === "string") {
+    return raw.startsWith("0x") ? raw : `0x${raw}`;
+  }
+  return toHex(raw);
+};
+
 export const buildParamsFromAbi = (enc: EncryptResult, abi: any[], functionName: string): any[] => {
   const fn = abi.find((item: any) => item.type === "function" && item.name === functionName);
   if (!fn) throw new Error(`Function ABI not found for ${functionName}`);
+  if (!Array.isArray(fn.inputs) || fn.inputs.length === 0) {
+    return [];
+  }
 
-  return fn.inputs.map((input: any, index: number) => {
-    const raw = index === 0 ? enc.handles[0] : enc.inputProof;
-    switch (input.type) {
-      case "bytes32":
-      case "bytes":
-        return toHex(raw);
-      case "uint256":
-        return BigInt(raw as unknown as string);
-      case "address":
-      case "string":
-        return raw as unknown as string;
-      case "bool":
-        return Boolean(raw);
-      default:
-        console.warn(`Unknown ABI param type ${input.type}; passing as hex`);
-        return toHex(raw);
+  let handleIndex = 0;
+  let proofConsumed = false;
+  return fn.inputs.map((input: AbiInput, index: number) => {
+    const useProof = isProofParameter(input);
+    let raw: Uint8Array | string;
+
+    if (useProof) {
+      if (!enc.inputProof) {
+        throw new Error(`buildParamsFromAbi: missing inputProof for parameter ${input.name ?? `#${index}`}`);
+      }
+      raw = enc.inputProof;
+      proofConsumed = true;
+    } else {
+      const handle = enc.handles[handleIndex];
+      if (handle) {
+        raw = handle;
+        handleIndex += 1;
+      } else if (!proofConsumed && enc.inputProof) {
+        raw = enc.inputProof;
+        proofConsumed = true;
+      } else {
+        throw new Error(
+          `buildParamsFromAbi: not enough encrypted handles for parameter ${input.name ?? `#${index}`}`
+        );
+      }
     }
+
+    const type = input.type;
+    if (!type) {
+      console.warn(`Unknown ABI param type; passing as hex`);
+      return toHex(raw);
+    }
+
+    if (type === "bool") {
+      return coerceBool(raw);
+    }
+    if (type === "address" || type === "string") {
+      return coerceAddressOrString(raw);
+    }
+    if (type.startsWith("uint") || type === "int256" || type.startsWith("int")) {
+      return coerceUintToBigInt(raw);
+    }
+    if (type.startsWith("bytes")) {
+      return toHex(raw);
+    }
+
+    console.warn(`Unknown ABI param type ${type}; passing as hex`);
+    return toHex(raw);
   });
 };

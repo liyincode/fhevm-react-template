@@ -12,7 +12,24 @@ export type FhevmInstanceHandle = {
   refresh(options?: Partial<CreateInstanceOptions>): Promise<void>;
 };
 
-export const createInstanceHandle = (config: FhevmConfig) => {
+export type CreateInstanceHandleOptions = {
+  defaultProvider?: unknown | (() => unknown);
+};
+
+const resolveDefaultProvider = (options?: CreateInstanceHandleOptions) => {
+  if (!options) {
+    return typeof window !== "undefined" ? (window as any)?.ethereum : undefined;
+  }
+  if (typeof options.defaultProvider === "function") {
+    return options.defaultProvider();
+  }
+  if (options.defaultProvider !== undefined) {
+    return options.defaultProvider;
+  }
+  return typeof window !== "undefined" ? (window as any)?.ethereum : undefined;
+};
+
+export const createInstanceHandle = (config: FhevmConfig, handleOptions?: CreateInstanceHandleOptions) => {
   let status: FhevmInstanceStatus = "idle";
   let instance: FhevmInstance | undefined;
   let error: Error | undefined;
@@ -28,7 +45,7 @@ export const createInstanceHandle = (config: FhevmConfig) => {
     status = "idle";
   };
 
-  const refresh = async (options: Partial<CreateInstanceOptions> = {}) => {
+  const refresh = async (refreshOptions: Partial<CreateInstanceOptions> = {}) => {
     abort();
     notify("loading");
     error = undefined;
@@ -37,10 +54,10 @@ export const createInstanceHandle = (config: FhevmConfig) => {
     const currentController = abortController;
     try {
       const result = await createConfiguredFhevmInstance(config, {
-        provider: options.provider ?? (window as any)?.ethereum,
-        chainId: options.chainId,
+        provider: refreshOptions.provider ?? resolveDefaultProvider(handleOptions),
+        chainId: refreshOptions.chainId,
         signal: currentController.signal,
-        onStatusChange: options.onStatusChange,
+        onStatusChange: refreshOptions.onStatusChange,
       });
       instance = result.instance;
       notify("ready");

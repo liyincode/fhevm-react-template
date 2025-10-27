@@ -1,6 +1,6 @@
 import type { CreateInstanceOptions } from "./instance";
 import { createConfiguredFhevmInstance } from "./instance";
-import { createInstanceHandle } from "./instanceHandle";
+import { createInstanceHandle, type CreateInstanceHandleOptions } from "./instanceHandle";
 import type { FhevmConfig } from "./config";
 import type { FhevmInstance } from "../fhevmTypes";
 import type { EncryptResult } from "./encryption";
@@ -19,8 +19,10 @@ export type FhevmClient = {
   publicDecrypt: typeof publicDecrypt;
 };
 
-export const createFhevmClient = (config: FhevmConfig): FhevmClient => {
-  const handle = createInstanceHandle(config);
+export type CreateFhevmClientOptions = Pick<CreateInstanceHandleOptions, "defaultProvider">;
+
+export const createFhevmClient = (config: FhevmConfig, options?: CreateFhevmClientOptions): FhevmClient => {
+  const handle = createInstanceHandle(config, { defaultProvider: options?.defaultProvider });
 
   const createInstance = async (options: CreateInstanceOptions): Promise<FhevmInstance> => {
     const result = await createConfiguredFhevmInstance(config, options);

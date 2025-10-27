@@ -103,13 +103,15 @@ const wrapInstanceWithStore = async (
   let aclAddress: `0x${string}` | undefined = aclAddressOverride;
 
   if (!aclAddress) {
-    try {
-      const chain = getChainFromConfig(config, chainId);
-      if (chain.relayer?.acl) {
-        aclAddress = chain.relayer.acl;
+    const chain = (() => {
+      try {
+        return getChainFromConfig(config, chainId);
+      } catch {
+        return null;
       }
-    } catch {
-      // ignore lookup errors and fall back to adapter config
+    })();
+    if (chain?.relayer?.acl) {
+      aclAddress = chain.relayer.acl;
     }
   }
 
@@ -224,7 +226,8 @@ const isHexAddress = (value: unknown): value is `0x${string}` => {
 
 const getChainDefinition = (config: FhevmConfig, chainId: number): ChainDefinition | undefined => {
   try {
-    return getChainFromConfig(config, chainId);
+    const chain = getChainFromConfig(config, chainId);
+    return chain ?? undefined;
   } catch {
     return undefined;
   }
