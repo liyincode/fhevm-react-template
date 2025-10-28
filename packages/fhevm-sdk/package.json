@@ -1,38 +1,84 @@
 {
-  "name": "@fhevm/sdk",
+  "name": "@liyincode/fhevm-sdk",
   "version": "0.1.0",
-  "private": true,
+  "description": "Framework-agnostic SDK for working with Zama FHEVM across web and node runtimes.",
+  "author": "liyincode",
+  "license": "BSD-3-Clause-Clear",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https:://github.com/liyincode/fhevm-react-template.git",
+    "directory": "packages/fhevm-sdk"
+  },
+  "homepage": "https://github.com/liyincode/fhevm-react-template#readme",
+  "bugs": {
+    "url": "https://github.com/liyincode/fhevm-react-template/issues"
+  },
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "types": "src/index.ts",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "keywords": [
+    "fhevm",
+    "fhe",
+    "zama",
+    "encryption",
+    "privacy",
+    "zk",
+    "web3",
+    "sdk",
+    "react",
+    "vue",
+    "node",
+    "typescript"
+  ],
+  "contributors": [
+    {
+      "name": "Original FHEVM Team",
+      "url": "https://github.com/zama-ai/fhevm"
+    }
+  ],
+  "sideEffects": false,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  },
   "exports": {
     ".": {
-      "types": "./src/index.ts",
+      "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
     "./core": {
-      "types": "./src/core/index.ts",
+      "types": "./dist/core/index.d.ts",
       "default": "./dist/core/index.js"
     },
     "./storage": {
-      "types": "./src/shared/storage/index.ts",
+      "types": "./dist/shared/storage/index.d.ts",
       "default": "./dist/shared/storage/index.js"
     },
     "./types": {
-      "types": "./src/shared/types/fhevmTypes.ts",
+      "types": "./dist/shared/types/fhevmTypes.d.ts",
       "default": "./dist/shared/types/fhevmTypes.js"
     },
     "./react": {
-      "types": "./src/platform/react/index.ts",
+      "types": "./dist/platform/react/index.d.ts",
       "default": "./dist/platform/react/index.js"
     },
     "./vue": {
-      "types": "./src/platform/vue/index.ts",
+      "types": "./dist/platform/vue/index.d.ts",
       "default": "./dist/platform/vue/index.js"
     },
     "./node": {
-      "types": "./src/platform/node/index.ts",
+      "types": "./dist/platform/node/index.d.ts",
       "default": "./dist/platform/node/index.js"
     }
   },
@@ -41,7 +87,8 @@
     "watch": "tsc -p tsconfig.json --watch",
     "clean": "rm -rf dist",
     "test": "vitest run --coverage",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "prepublishOnly": "pnpm clean && pnpm build && pnpm test"
   },
   "dependencies": {
     "idb": "^8.0.3"
@@ -66,5 +113,16 @@
     "vue": "^3.5.12",
     "typescript": "~5.8.2",
     "vitest": "~2.1.8"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": true
+    },
+    "vue": {
+      "optional": true
+    },
+    "@fhevm/mock-utils": {
+      "optional": true
+    }
   }
 }
