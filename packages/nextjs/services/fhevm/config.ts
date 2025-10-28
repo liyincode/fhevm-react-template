@@ -1,4 +1,4 @@
-import { type ChainDefinition, type FhevmConfig, createBrowserFhevmConfig } from "@fhevm-sdk";
+import { type ChainDefinition, type FhevmConfig, createBrowserFhevmConfig } from "@liyincode/fhevm-sdk/core";
 
 const HARDHAT_CHAIN_ID = 31337;
 const HARDHAT_RPC_URL = process.env.NEXT_PUBLIC_HARDHAT_RPC_URL ?? "http://localhost:8545";

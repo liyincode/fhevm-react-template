@@ -3,14 +3,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useDeployedContractInfo } from "../helper";
 import { useWagmiEthers } from "../wagmi/useWagmiEthers";
-import { FhevmInstance } from "@fhevm-sdk";
-import {
-  buildParamsFromAbi,
-  getEncryptionMethod,
-  useEncryptedInput,
-  useSignatureStorage,
-  useUserDecrypt,
-} from "@fhevm-sdk";
+import { buildParamsFromAbi, getEncryptionMethod } from "@liyincode/fhevm-sdk/core";
+import { useEncryptedInput, useSignatureStorage, useUserDecrypt } from "@liyincode/fhevm-sdk/react";
+import { FhevmInstance } from "@liyincode/fhevm-sdk/types";
 import { ethers } from "ethers";
 import { useReadContract } from "wagmi";
 import type { Contract } from "~~/utils/helper/contract";
