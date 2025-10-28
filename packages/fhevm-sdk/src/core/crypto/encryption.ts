@@ -1,5 +1,5 @@
 import type { RelayerEncryptedInput } from "@zama-fhe/relayer-sdk/bundle";
-import type { FhevmInstance } from "../fhevmTypes";
+import type { FhevmInstance } from "../../shared/types/fhevmTypes";
 
 export type EncryptResult = {
   handles: Uint8Array[];

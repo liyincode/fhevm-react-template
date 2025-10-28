@@ -1,6 +1,6 @@
-import type { FhevmInstance } from "../fhevmTypes";
-import type { FhevmConfig } from "./config";
-import { createConfiguredFhevmInstance, type CreateInstanceOptions } from "./instance";
+import type { FhevmInstance } from "../../shared/types/fhevmTypes";
+import type { FhevmConfig } from "../config";
+import { createConfiguredFhevmInstance, type CreateInstanceOptions } from "./createInstance";
 
 export type FhevmInstanceStatus = "idle" | "loading" | "ready" | "error";
 

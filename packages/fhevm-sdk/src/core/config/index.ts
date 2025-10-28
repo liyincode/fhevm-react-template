@@ -1,6 +1,6 @@
-import type { FhevmInstance, FhevmInstanceConfig } from "../fhevmTypes";
-import type { FhevmInitSDKOptions } from "../internal/fhevmTypes";
-import type { GenericStringStorage } from "../storage/GenericStringStorage";
+import type { FhevmInstance, FhevmInstanceConfig } from "../../shared/types/fhevmTypes";
+import type { FhevmInitSDKOptions } from "../../internals/fhevmTypes";
+import type { GenericStringStorage } from "../../shared/storage/GenericStringStorage";
 
 type ConsoleLike = Pick<Console, "log" | "warn" | "error">;
 

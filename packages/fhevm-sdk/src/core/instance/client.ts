@@ -1,11 +1,11 @@
-import type { CreateInstanceOptions } from "./instance";
-import { createConfiguredFhevmInstance } from "./instance";
-import { createInstanceHandle, type CreateInstanceHandleOptions } from "./instanceHandle";
-import type { FhevmConfig } from "./config";
-import type { FhevmInstance } from "../fhevmTypes";
-import type { EncryptResult } from "./encryption";
-import { encryptInput, getEncryptionMethod, toHex, buildParamsFromAbi } from "./encryption";
-import { publicDecrypt, userDecrypt } from "./decryption";
+import type { CreateInstanceOptions } from "./createInstance";
+import { createConfiguredFhevmInstance } from "./createInstance";
+import { createInstanceHandle, type CreateInstanceHandleOptions } from "./handle";
+import type { FhevmConfig } from "../config";
+import type { FhevmInstance } from "../../shared/types/fhevmTypes";
+import type { EncryptResult } from "../crypto/encryption";
+import { encryptInput, getEncryptionMethod, toHex, buildParamsFromAbi } from "../crypto/encryption";
+import { publicDecrypt, userDecrypt } from "../crypto/decryption";
 
 export type FhevmClient = {
   config: FhevmConfig;

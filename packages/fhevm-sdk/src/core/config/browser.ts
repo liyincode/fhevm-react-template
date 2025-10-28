@@ -1,6 +1,13 @@
-import { createBrowserRelayerClient } from "./adapters/browserRelayerClient";
-import { createIndexedDbPublicKeyStore } from "./adapters/indexedDbPublicKeyStore";
-import { createFhevmConfig, type ChainDefinition, type FhevmConfig, type FhevmConfigOptions, type PublicKeyStore, type RelayerClientAdapter } from "./config";
+import { createBrowserRelayerClient } from "../adapters/relayer/browser";
+import { createIndexedDbPublicKeyStore } from "../adapters/storage/indexedDb";
+import {
+  createFhevmConfig,
+  type ChainDefinition,
+  type FhevmConfig,
+  type FhevmConfigOptions,
+  type PublicKeyStore,
+  type RelayerClientAdapter,
+} from "./index";
 
 export type BrowserFhevmConfigOptions = {
   chains: ChainDefinition[];

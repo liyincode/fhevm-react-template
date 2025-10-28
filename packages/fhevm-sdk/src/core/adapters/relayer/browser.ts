@@ -1,7 +1,7 @@
-import { SDK_CDN_URL } from "../../internal/constants";
-import type { FhevmInitSDKOptions, FhevmRelayerSDKType, FhevmWindowType } from "../../internal/fhevmTypes";
-import type { FhevmInstanceConfig } from "../../fhevmTypes";
-import type { RelayerClientAdapter } from "../config";
+import { SDK_CDN_URL } from "../../../internals/constants";
+import type { FhevmInitSDKOptions, FhevmRelayerSDKType, FhevmWindowType } from "../../../internals/fhevmTypes";
+import type { FhevmInstanceConfig } from "../../../shared/types/fhevmTypes";
+import type { RelayerClientAdapter } from "../../config";
 
 const loadRelayerScript = async (logger?: ConsoleLike) => {
   if (typeof window === "undefined") {

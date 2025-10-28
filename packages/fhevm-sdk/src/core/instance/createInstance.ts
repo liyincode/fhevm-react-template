@@ -1,8 +1,8 @@
 import { JsonRpcProvider, type Eip1193Provider } from "ethers";
-import type { FhevmInstance, FhevmInstanceConfig } from "../fhevmTypes";
-import { FhevmAbortError, FhevmError } from "./errors";
-import { getChainFromConfig } from "./config";
-import type { ChainDefinition, FhevmConfig } from "./config";
+import type { FhevmInstance, FhevmInstanceConfig } from "../../shared/types/fhevmTypes";
+import { FhevmAbortError, FhevmError } from "../errors";
+import { getChainFromConfig } from "../config";
+import type { ChainDefinition, FhevmConfig } from "../config";
 
 class FhevmInstanceError extends FhevmError {
   code: string;
@@ -311,7 +311,7 @@ const createMockInstance = async (
     throw new Error("Unable to fetch FHEVM relayer metadata for Hardhat node.");
   }
 
-  const fhevmMock = await import("../internal/mock/fhevmMock");
+  const fhevmMock = await import("../../internals/mock/fhevmMock");
   const mockInstance = await fhevmMock.fhevmMockCreateInstance({
     rpcUrl: resolution.rpcUrl,
     chainId: resolution.chainId,

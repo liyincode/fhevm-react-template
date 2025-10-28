@@ -1,6 +1,6 @@
 import { openDB, type DBSchema, type IDBPDatabase } from "idb";
-import { publicKeyStorageGet, publicKeyStorageSet } from "../../internal/PublicKeyStorage";
-import type { PublicKeyRecord, PublicKeyStore } from "../config";
+import { publicKeyStorageGet, publicKeyStorageSet } from "../../../internals/PublicKeyStorage";
+import type { PublicKeyRecord, PublicKeyStore } from "../../config";
 
 const DB_NAME = "fhevm";
 const PUBLIC_KEY_STORE = "publicKeyStore";

@@ -1,4 +1,4 @@
-import type { PublicKeyRecord, PublicKeyStore } from "../config";
+import type { PublicKeyRecord, PublicKeyStore } from "../../config";
 
 export const createMemoryPublicKeyStore = (): PublicKeyStore => {
   const store = new Map<`0x${string}`, PublicKeyRecord>();

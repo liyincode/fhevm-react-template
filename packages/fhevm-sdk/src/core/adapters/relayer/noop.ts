@@ -1,4 +1,4 @@
-import type { RelayerClientAdapter } from "../config";
+import type { RelayerClientAdapter } from "../../config";
 
 export const createNoopRelayerClient = (message?: string): RelayerClientAdapter => {
   const errorMessage = message ?? "Relayer client is not available in this environment.";

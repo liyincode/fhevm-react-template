@@ -1,7 +1,7 @@
 import type { JsonRpcSigner } from "ethers";
-import type { GenericStringStorage } from "../storage/GenericStringStorage";
-import type { FhevmInstance } from "../fhevmTypes";
-import { FhevmDecryptionSignature } from "../FhevmDecryptionSignature";
+import type { GenericStringStorage } from "../../shared/storage/GenericStringStorage";
+import type { FhevmInstance } from "../../shared/types/fhevmTypes";
+import { FhevmDecryptionSignature } from "../../shared/signature/FhevmDecryptionSignature";
 
 export type FHEDecryptRequest = { handle: string; contractAddress: `0x${string}` };
 
