@@ -1,8 +1,13 @@
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { defineConfig } from "vitest/config";
 
-const dirname = path.dirname(fileURLToPath(import.meta.url));
+const packageDir = (() => {
+  const fromEnv = process.env.PNPM_PACKAGE_DIR;
+  if (fromEnv) {
+    return path.resolve(fromEnv);
+  }
+  return process.cwd();
+})();
 
 export default defineConfig({
   test: {
@@ -13,7 +18,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      vue: path.resolve(dirname, "test/__stubs__/vue.ts"),
+      vue: path.resolve(packageDir, "test/__stubs__/vue.ts"),
     },
   },
 });
