@@ -1,5 +1,7 @@
 # @liyincode/fhevm-sdk
 
+[![npm version](https://img.shields.io/npm/v/@liyincode/fhevm-sdk.svg)](https://www.npmjs.com/package/@liyincode/fhevm-sdk)
+
 A framework-agnostic front-end SDK for Zama's FHEVM. It wraps the [Relayer SDK](https://docs.zama.ai/protocol/relayer-sdk-guides) so you can bootstrap encrypted dApps across browsers, React apps, and Node environments with one toolkit.
 
 > Requires Node.js 18+ and pnpm 8+. The SDK provides multiple entry points: `core` (platform-agnostic APIs), `react` (React hooks), and `node` (Node.js utilities).
