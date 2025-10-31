@@ -11,6 +11,7 @@ import { Toaster } from "react-hot-toast";
 import { WagmiProvider } from "wagmi";
 import { Header } from "~~/components/Header";
 import { BlockieAvatar } from "~~/components/helper";
+import scaffoldConfig from "~~/scaffold.config";
 import { browserFhevmConfig } from "~~/services/fhevm/config";
 import { wagmiConfig } from "~~/services/web3/wagmiConfig";
 
@@ -38,6 +39,7 @@ export const DappWrapperWithProviders = ({ children }: { children: React.ReactNo
         <RainbowKitProvider
           avatar={BlockieAvatar}
           theme={mounted ? (isDarkMode ? darkTheme() : lightTheme()) : lightTheme()}
+          initialChain={scaffoldConfig.targetNetworks[0]}
         >
           <ProgressBar height="3px" color="#2299dd" />
           <div className={`flex flex-col min-h-screen`}>
