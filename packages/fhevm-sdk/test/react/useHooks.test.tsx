@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { renderHook, act } from "@testing-library/react";
+import { renderHook, act, waitFor } from "@testing-library/react";
 
 vi.mock("../../src/core/instance/handle", () => {
   const handle = {
@@ -52,16 +52,19 @@ describe("React hooks", () => {
       relayerClient: makeRelayerClient(),
       publicKeyStore: createMemoryPublicKeyStore(),
     });
+    const provider = { request: vi.fn() } as unknown as any;
     return ({ children }: { children: React.ReactNode }) => (
-      <FhevmProvider config={config}>{children}</FhevmProvider>
+      <FhevmProvider config={config} provider={provider} chainId={1}>
+        {children}
+      </FhevmProvider>
     );
   };
 
-  it("returns ready instance from useFhevmInstance", () => {
+  it("returns ready instance from useFhevmInstance", async () => {
     const wrapper = makeWrapper();
     const { result } = renderHook(() => useFhevmInstance(), { wrapper });
 
-    expect(result.current.status).toBe("ready");
+    await waitFor(() => expect(result.current.status).toBe("ready"));
     expect(result.current.instance).toEqual({ marker: "instance" });
   });
 
