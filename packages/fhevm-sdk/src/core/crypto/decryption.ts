@@ -1,4 +1,4 @@
-import type { JsonRpcSigner } from "ethers";
+import type { JsonRpcSigner, Signer } from "ethers";
 import type { GenericStringStorage } from "../../shared/storage/GenericStringStorage";
 import type { FhevmInstance } from "../../shared/types/fhevmTypes";
 import { FhevmDecryptionSignature } from "../../shared/signature/FhevmDecryptionSignature";
@@ -7,7 +7,7 @@ export type FHEDecryptRequest = { handle: string; contractAddress: `0x${string}`
 
 export type UserDecryptParams = {
   instance: FhevmInstance;
-  signer: JsonRpcSigner;
+  signer: Signer | JsonRpcSigner;
   requests: readonly FHEDecryptRequest[];
   storage: GenericStringStorage;
   chainId?: number;

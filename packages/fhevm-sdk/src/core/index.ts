@@ -7,6 +7,7 @@ export * from "./config/browser";
 
 export * from "./adapters/relayer/browser";
 export * from "./adapters/relayer/noop";
+export * from "./adapters/relayer/node";
 export * from "./adapters/storage/indexedDb";
 export * from "./adapters/storage/memory";
 

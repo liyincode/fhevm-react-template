@@ -231,7 +231,7 @@ export class FhevmDecryptionSignature {
     contractAddresses: string[],
     publicKey: string,
     privateKey: string,
-    signer: ethers.JsonRpcSigner,
+    signer: ethers.Signer,
   ): Promise<FhevmDecryptionSignature | null> {
     try {
       const userAddress = (await signer.getAddress()) as `0x${string}`;
@@ -261,7 +261,7 @@ export class FhevmDecryptionSignature {
   static async loadOrSign(
     instance: FhevmInstance,
     contractAddresses: string[],
-    signer: ethers.JsonRpcSigner,
+    signer: ethers.Signer,
     storage: GenericStringStorage,
     keyPair?: { publicKey: string; privateKey: string },
   ): Promise<FhevmDecryptionSignature | null> {
