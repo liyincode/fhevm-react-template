@@ -9,3 +9,7 @@ packages/*/.turbo
 packages/*/coverage
 tmp*
 .vscode
+.idea
+
+# FHEVM cache
+**/.fhevm-cache
