@@ -20,7 +20,9 @@ const MOCK_CHAINS: Record<number, string> = {
   [HARDHAT_CHAIN_ID]: HARDHAT_RPC_URL,
 };
 
-export const browserFhevmConfig: FhevmConfig = createBrowserFhevmConfig({
-  chains: CHAINS,
-  mockChains: MOCK_CHAINS,
-});
+export const browserFhevmConfig = (process.env.NEXT_PUBLIC_ENABLE_LOCALCHAIN === "true"
+  ? createBrowserFhevmConfig({ chains: CHAINS, mockChains: MOCK_CHAINS })
+  : createBrowserFhevmConfig({
+      chains: CHAINS.filter(chain => chain.id !== HARDHAT_CHAIN_ID),
+      mockChains: {},
+    }));
